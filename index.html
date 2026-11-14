@@ -88,6 +88,46 @@ body.cloud .role{display:none}
 .ucard{margin-top:14px;padding:12px;border-radius:14px;background:rgba(255,255,255,.12);font-size:14px}
 .ind{font-size:12px;margin-top:4px}.ind.ok{color:#86efac}.ind.saving{color:#fde68a}.ind.err{color:#fca5a5}
 .review-submit{margin-top:12px;display:flex;justify-content:flex-end}
+
+/* ===== ASV70 V2.8 Steel Blue – Modern Academic theme (CSS only; ไม่มีการเปลี่ยน JS/ID/Class) ===== */
+:root{--deep:#344B65;--steel:#526F8F;--muted-blue:#829BB5;--silver:#C0CEDD;--ice:#F0F3F7;--champ:#D1C5AE;--sec-tx:#5B6B80;
+--pri:#344B65;--pri2:#526F8F;--acc:#D1C5AE;--bg:#F0F3F7;--card:#FFFFFF;--tx:#263445;--mut:#5B6B80;--bd:#C0CEDD;--ok:#2F6E4F;--bad:#9B3B2E;--warn:#8A5A12;
+--grad-side:linear-gradient(170deg,#344B65 0%,#526F8F 100%);--grad-brand:linear-gradient(90deg,#D1C5AE 0%,#C0CEDD 100%);--grad-card:linear-gradient(135deg,#526F8F,#344B65);--shadow:0 2px 10px rgba(52,75,101,.07)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--pri:#C0CEDD;--pri2:#526F8F;--acc:#D1C5AE;--bg:#0F1B2B;--card:#172638;--tx:#E6EDF7;--mut:#A7B4C6;--bd:#2C3F57;--shadow:0 2px 10px rgba(0,0,0,.25)}}
+:root[data-theme="dark"]{--pri:#C0CEDD;--pri2:#526F8F;--acc:#D1C5AE;--bg:#0F1B2B;--card:#172638;--tx:#E6EDF7;--mut:#A7B4C6;--bd:#2C3F57;--shadow:0 2px 10px rgba(0,0,0,.25)}
+aside{background:var(--grad-side)}
+.brand-main{background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#D1C5AE;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))}
+.nav{transition:background .2s ease,color .2s ease,box-shadow .2s ease}
+.nav:hover{background:rgba(255,255,255,.12)}
+.nav.on{background:#526F8F;color:#fff;font-weight:700;box-shadow:inset 3px 0 0 #D1C5AE,0 4px 14px rgba(0,0,0,.18)}
+.nav:focus-visible{outline:2px solid #D1C5AE;outline-offset:2px}
+.card{box-shadow:var(--shadow)}
+.btn{background:#526F8F;color:#fff;transition:background .2s ease,transform .15s ease}
+.btn:hover{background:#344B65;filter:none}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:2px solid #D1C5AE;outline-offset:2px}
+.btn.g{background:#fff;color:#344B65;border:1px solid #526F8F}
+.btn.g:hover{background:#F0F3F7}
+.btn.r{background:#9B3B2E}.btn.r:hover{background:#7f2f25}
+.btn.o{background:#2F6E4F}.btn.o:hover{background:#245a3e}
+th{background:rgba(82,111,143,.12);color:var(--tx)}
+tbody tr:hover td{background:rgba(130,155,181,.16)}
+.card>h3{background:linear-gradient(90deg,#344B65,#526F8F);color:#fff}
+.top{background:linear-gradient(100deg,#344B65,#526F8F);color:#fff}
+.tag{background:#E4ECF4;color:#344B65}
+.tag.ok{background:#DDEFE5;color:#2F6E4F}.tag.bad{background:#F3E0DC;color:#9B3B2E}.tag.w{background:#F5EBD9;color:#8A5A12}
+.st{transition:transform .2s ease,box-shadow .2s ease;background:#526F8F;color:#fff}
+.st:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(52,75,101,.18)}
+.st:nth-child(6n+1){background:#526F8F;color:#fff}
+.st:nth-child(6n+2){background:#2563A8;color:#fff}
+.st:nth-child(6n+3){background:#2F6E4F;color:#fff}
+.st:nth-child(6n+4){background:#8A5A12;color:#fff}
+.st:nth-child(6n+5){background:#9B3B2E;color:#fff}
+.st:nth-child(6n+6){background:#D1C5AE;color:#263445}
+.st:nth-child(6n+6) b{color:#263445}
+.bar i{background:linear-gradient(90deg,#526F8F,#829BB5)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* ===== end V2.8 theme ===== */
 </style></head><body>
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
