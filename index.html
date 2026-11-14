@@ -6,7 +6,7 @@
 :root[data-theme="dark"]{--bg:#0d1626;--card:#15233a;--tx:#e6edf7;--mut:#94a3b8;--bd:#25375a;color-scheme:dark}
 *{box-sizing:inherit}html,body{height:100%}body{margin:0;font-family:Sarabun,"Noto Sans Thai",sans-serif;background:var(--bg);color:var(--tx);display:flex}
 aside{width:250px;flex:none;background:linear-gradient(170deg,#173C6E 0%,#1f5a9e 60%,#0ea5a4 130%);color:#fff;padding:18px 12px;display:flex;flex-direction:column;gap:6px;overflow:auto}
-aside h1{font-size:13px;margin:0 6px 10px;line-height:1.45}aside h1.system-name{font-size:13px;line-height:1.5;overflow-wrap:anywhere}aside small{opacity:.85;display:block;font-size:11px;font-weight:400;margin-top:3px}
+aside h1{font-size:13px;margin:0 6px 10px;line-height:1.45}aside h1.system-name{font-size:13px;line-height:1.5;overflow-wrap:anywhere}.brand{margin:0 6px 10px;line-height:1.45;overflow-wrap:anywhere}.brand-main{font-size:30px;font-weight:800;letter-spacing:1px;color:#fde68a;background:linear-gradient(90deg,#fde68a,#f9a8d4,#67e8f9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}.brand-sub{font-size:14px;font-weight:700;color:#fff;margin-top:4px}.brand-org{font-size:12px;opacity:.9;margin-top:4px}aside small{opacity:.85;display:block;font-size:11px;font-weight:400;margin-top:3px}
 .nav{display:flex;gap:10px;align-items:center;padding:11px 14px;border-radius:12px;color:#e3edfa;cursor:pointer;font-size:15px;border:0;background:none;text-align:left;font-family:inherit;width:100%}
 .nav:hover{background:rgba(255,255,255,.14)}.nav.on{background:#fff;color:var(--pri);font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 .role{margin:4px 6px 10px}.role select{width:100%}
@@ -91,7 +91,7 @@ body.cloud .role{display:none}
 </style></head><body>
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<aside><h1 class="system-name">ระบบบริหารจัดการงานบริการวิชาการรับใช้สังคม<small>คณะรัฐศาสตร์และรัฐประศาสนศาสตร์ มหาวิทยาลัยเชียงใหม่</small><small>ทุนบริการวิชาการ ปีงบประมาณ</small></h1>
+<aside><div class="brand"><div class="brand-main">AS-POL CMU</div><div class="brand-sub">ระบบบริหารจัดการงานบริการวิชาการรับใช้สังคม</div><div class="brand-org">คณะรัฐศาสตร์และรัฐประศาสนศาสตร์ มหาวิทยาลัยเชียงใหม่</div></div>
 <div class="role"><label style="color:#cfe0f5">ตัวเลือกบทบาทตัวอย่าง (โหมดทดสอบ)</label><select id="roleSel" onchange="ST.role=this.value;ST.page=NAV[0].id;save();render()"></select></div><div id="nav"></div></aside>
 <main id="main"></main>
 <script>
@@ -158,7 +158,7 @@ function inp(path,l,t){var v=P(),k=path.split(".");k.forEach(function(x){v=v[x]}
 function ta(path,l){var v=P(),k=path.split(".");k.forEach(function(x){v=v[x]});return"<div><label>"+l+'</label><textarea oninput="set(\''+path+"',this.value)\">"+esc(v)+"</textarea></div>"}
 function form(){var p=P();if(!p){addP();return""}var ro=!ownerEdit(p),h=ttl("แบบฟอร์มข้อเสนอโครงการบริการวิชาการรับใช้สังคม "+fyOf(p),'<span class="tag">'+p.status+'</span>'+(ro?'<button class="btn g" onclick="go(\'list\')">← กลับรายการ</button>':"")+'<button class="btn g" onclick="go(\'doc\')">👁 ดูเอกสาร A4</button>'+(ro?'':'<button class="btn o" onclick="go(\'preview\')">🔍 พรีวิวข้อเสนอ</button><button class="btn" onclick="manualSave()">💾 บันทึกร่าง</button>')+'<button class="btn o" onclick="go(\'doc\');setTimeout(print,300)">🖨 พิมพ์ / PDF</button>');
 h+='<fieldset style="border:0;padding:0;margin:0" '+(ro?"disabled":"")+">";
-h+='<div class="card"><h3>1. ข้อมูลทั่วไปของผู้เสนอโครงการและคณะทำงาน</h3><div class="g2">'+inp("pi.name","ชื่อ-สกุล หัวหน้าโครงการ")+inp("pi.pos","ตำแหน่ง")+inp("pi.dept","สังกัด/คณะ/หน่วยงาน")+inp("pi.tel","โทรศัพท์")+inp("pi.email","อีเมล","email")+inp("pi.area","พื้นที่บริการวิชาการ")+'</div><label>คณะทำงาน</label><table><tr><th>ชื่อ-สกุล</th><th>บทบาท</th><th>สังกัด</th><th></th></tr>'+p.team.map(function(m,i){return"<tr>"+["name","role","dept"].map(function(k){return'<td><input value="'+esc(m[k])+'" oninput="P().team['+i+"]."+k+'=this.value;save()"></td>'}).join("")+'<td><button class="btn s r" onclick="P().team.splice('+i+',1);render()">ลบ</button></td></tr>'}).join("")+'</table><button class="btn s" style="margin-top:8px" onclick="P().team.push({name:\'\',role:\'\',dept:\'\'});render()">+ เพิ่มคณะทำงาน</button></div>';
+h+='<div class="card"><h3>1. ข้อมูลทั่วไปของผู้เสนอโครงการและคณะทำงาน</h3><div class="g2">'+inp("pi.name","ชื่อ-สกุล หัวหน้าโครงการ")+inp("pi.pos","ตำแหน่ง")+inp("pi.dept","สังกัด/คณะ/หน่วยงาน")+inp("pi.tel","โทรศัพท์")+inp("pi.email","อีเมลผู้รับการแจ้งเตือน (ใส่หลายอีเมลได้ คั่นด้วยเครื่องหมายจุลภาค ,)")+inp("pi.area","พื้นที่บริการวิชาการ")+'</div><label>คณะทำงาน</label><table><tr><th>ชื่อ-สกุล</th><th>บทบาท</th><th>สังกัด</th><th></th></tr>'+p.team.map(function(m,i){return"<tr>"+["name","role","dept"].map(function(k){return'<td><input value="'+esc(m[k])+'" oninput="P().team['+i+"]."+k+'=this.value;save()"></td>'}).join("")+'<td><button class="btn s r" onclick="P().team.splice('+i+',1);render()">ลบ</button></td></tr>'}).join("")+'</table><button class="btn s" style="margin-top:8px" onclick="P().team.push({name:\'\',role:\'\',dept:\'\'});render()">+ เพิ่มคณะทำงาน</button></div>';
 h+='<div class="card"><h3>2. ชื่อโครงการ</h3><div class="g2">'+inp("th","ชื่อโครงการ (ภาษาไทย)")+inp("en","Project title (English)")+"</div></div>";
 h+='<div class="card"><h3>3. ความสอดคล้องกับกรอบ SDGs</h3><div class="g2" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="sdg" style="display:flex;flex-direction:column">'+SDG.slice(0,8).map(function(s,i){return'<label><input type="checkbox" '+(p.sdg.indexOf(i+1)>-1?"checked":"")+' onchange="tgl(\'sdg\','+(i+1)+')">SDG '+(i+1)+' '+s+'</label>'}).join("")+"</div><div class=\"sdg\" style=\"display:flex;flex-direction:column\">"+SDG.slice(8).map(function(s,i){var n=i+9;return'<label><input type=\"checkbox\" '+(p.sdg.indexOf(n)>-1?"checked":"")+' onchange=\"tgl(\'sdg\','+n+')\">SDG '+n+' '+s+'</label>'}).join("")+"</div></div></div>";
 h+='<div class="card"><h3>4. ความสอดคล้องกับตัวชี้วัดวิสัยทัศน์ของคณะ</h3><div class="sdg">'+VIS.map(function(s,i){return'<label><input type="checkbox" '+(p.vis.indexOf(i)>-1?"checked":"")+' onchange="tgl(\'vis\','+i+')">'+s+"</label>"}).join("")+'</div><div class="hint">* ปรับรายการตัวชี้วัดให้ตรงกับวิสัยทัศน์ของคณะในตัวแปร VIS</div></div>';
@@ -316,7 +316,7 @@ function mclose(){var m=document.getElementById("mdl");if(m)m.style.display="non
 function cp(){var t=document.getElementById("ex");t.select();try{document.execCommand("copy");alert("คัดลอกแล้ว")}catch(e){}}
 function CHK(p){
 var team=(p.team||[]).filter(function(m){return String(m.name||m.role||m.dept||"").trim()}),teamOk=team.length>0&&team.every(function(m){return String(m.name||"").trim()&&String(m.role||"").trim()&&String(m.dept||"").trim()}),
-emailOk=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(p.pi.email||"")),
+emailOk=emailsOk(p.pi.email),
 indirectOk=(!String(p.tg.indirect||"").trim()&&!String(p.tg.ic||"").trim())||(String(p.tg.indirect||"").trim()&&+p.tg.ic>0),
 planOk=p.acts.slice(0,3).every(function(a){return String(a.n||"").trim()&&a.plan.some(Boolean)}),t=totT(p);
 return[
@@ -735,7 +735,7 @@ function confirmProjectClosure(id){var p=G(id);if(!p)return;var miss=closureChec
 /* ===== ASV70 V2.2: บทบาทหัวหน้าโครงการ + หน้า "ยื่นข้อเสนอโครงการ" แยกจาก "รายการ/สถานะโครงการ" ===== */
 function ownerEdit(p){return !!p&&(ST.role==1||ST.role==5)&&p.owner==ST.me&&EDIT.indexOf(p.status)>-1}
 function actsAsHead(p){return !!p&&((ST.role==5&&p.headEmail==ST.me)||((ST.role==1||ST.role==5)&&!p.headEmail&&p.owner==ST.me))}
-function headName(e){var x=(ST.heads||[]).filter(function(h){return h.email==e})[0];return x?x.name+' ('+x.email+')':(e||'ยังไม่ระบุ')}
+function headName(e){var x=(ST.heads||[]).filter(function(h){return h.email==e})[0];return x?(x.name||x.email):(e||'ยังไม่ระบุ')}
 function navHome(){var p=P();return(ST.role==1||ST.role==5)&&p&&p.owner==ST.me&&EDIT.indexOf(p.status)>-1?'intake':'list'}
 function lockNote(p){if(p.status==='รอหัวหน้าโครงการยืนยัน')return ST.role==5&&p.headEmail==ST.me?'<div class="card" style="border-top-color:#7c3aed">📨 <b>ข้อเสนอนี้รอคุณตรวจสอบและยืนยัน</b> — อ่านรายละเอียดด้านล่าง แล้วกดยืนยันหรือส่งกลับแก้ไขที่ส่วน "การดำเนินการตามขั้นตอน" ท้ายหน้า</div>':'<div class="card" style="border-top-color:#7c3aed">📨 <b>ส่งให้หัวหน้าโครงการตรวจสอบและยืนยันแล้ว</b> — แก้ไขไม่ได้ จนกว่าหัวหน้าโครงการจะส่งกลับ</div>';
   return'<div class="card" style="border-top-color:#d97706">🔒 <b>ข้อเสนอนี้เข้าสู่กระบวนการพิจารณาแล้ว</b> — แก้ไขไม่ได้ จนกว่าเจ้าหน้าที่จะส่งกลับให้แก้ไข</div>'}
@@ -758,15 +758,19 @@ function intake(){var mine=ST.ps.filter(function(p){return ownerEdit(p)}),wait=S
   h+='<div class="card"><h3>ข้อเสนอที่ยังไม่ได้ส่ง / ส่งกลับแก้ไข ('+mine.length+')</h3>'+(mine.length?'<div class="wrap"><table><tr><th>รหัส</th><th>โครงการ</th><th>สถานะ</th><th></th></tr>'+mine.map(function(p){return row(p,'แก้ไข / ยื่นข้อเสนอ')}).join('')+'</table></div>':'<div class="hint">ไม่มีข้อเสนอที่ค้างอยู่</div>')+'<div class="hint" style="margin-top:8px">ดูสถานะโครงการทั้งหมดที่เมนู "รายการ / สถานะโครงการ"</div></div>';
   return h}
 
-function headOpts(sel,q){q=String(q||'').trim().toLowerCase();var hs=(ST.heads||[]).slice().sort(function(a,b){return String(a.name).localeCompare(String(b.name),'th')}).filter(function(h){return!q||(h.name+' '+h.email).toLowerCase().indexOf(q)>-1});return hs.length?hs.map(function(h){return'<option value="'+esc(h.email)+'"'+(h.email===sel?' selected':'')+'>'+esc(h.name)+' ('+esc(h.email)+')</option>'}).join(''):'<option value="" disabled>ไม่พบรายชื่อที่ค้นหา</option>'}
+function headOpts(sel,q){q=String(q||'').trim().toLowerCase();var hs=(ST.heads||[]).slice().sort(function(a,b){return String(a.name).localeCompare(String(b.name),'th')}).filter(function(h){return!q||(h.name+' '+h.email).toLowerCase().indexOf(q)>-1});return hs.length?hs.map(function(h){return'<option value="'+esc(h.email)+'"'+(h.email===sel?' selected':'')+'>'+esc(h.name||h.email)+'</option>'}).join(''):'<option value="" disabled>ไม่พบรายชื่อที่ค้นหา</option>'}
 function filterHeads(id,q){var e=gv(id);if(!e)return;var cur=e.value||e.getAttribute('data-sel')||'';e.innerHTML=headOpts(cur,q)}
 function headPickerHtml(sel,fn,id){var hs=ST.heads||[];return'<div>'+(sel?'<div class="cap ok" style="margin:6px 0">✔ เลือกแล้ว: <b>'+esc(headName(sel))+'</b></div>':'<div class="hint" style="margin:6px 0;color:var(--bad)">ยังไม่ได้เลือกหัวหน้าโครงการ</div>')+(hs.length>3?'<input type="search" placeholder="🔍 พิมพ์ชื่อหรืออีเมลเพื่อค้นหาหัวหน้าโครงการ" oninput="filterHeads(\''+id+'\',this.value)" style="width:100%;max-width:560px;margin-bottom:6px">':'')+'<select id="'+id+'" data-sel="'+esc(sel||'')+'" size="'+Math.min(6,Math.max(3,hs.length))+'" style="width:100%;max-width:560px" onchange="'+fn+'(this.value)">'+headOpts(sel,'')+'</select></div>'}
 function rememberHead(e){ST.newHead=e||'';try{localStorage.setItem('asv_lasthead_'+ST.me,e||'')}catch(x){}}
 function lastHead(){try{var e=localStorage.getItem('asv_lasthead_'+ST.me)||'';return(ST.heads||[]).some(function(h){return h.email===e})?e:''}catch(x){return''}}
-function pickHead(e){if(!e)return;var p=P();if(!p)return;p.headEmail=e;rememberHead(e);save();render()}
+function headRec(e){return (ST.heads||[]).filter(function(h){return h.email===e})[0]||null}
+function applyHeadToPi(p,e){var h=headRec(e);if(!h||!p)return;p.pi=p.pi||{};p.pi.name=h.name||'';p.pi.email=h.email||''}
+function emailList(s){return String(s||'').split(/[,;\s]+/).map(function(x){return x.trim().toLowerCase()}).filter(function(x){return x})}
+function emailsOk(s){var a=emailList(s);return a.length>0&&a.every(function(x){return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x)})}
+function pickHead(e){if(!e)return;var p=P();if(!p)return;p.headEmail=e;applyHeadToPi(p,e);rememberHead(e);save();render()}
 function pickNewHead(e){if(!e)return;ST.newHead=e;rememberHead(e);render()}
-function startProposal(){var hs=ST.heads||[],need=ST.role==1&&hs.length>0,h=need?(ST.newHead||lastHead()):'';if(need&&!h)return alert('กรุณาเลือกหัวหน้าโครงการของข้อเสนอก่อนเริ่ม');var bg=+ST.newBudget;if(!(bg>0&&bg<=CAP))return alert('กรุณาระบุงบประมาณโครงการ (มากกว่า 0 และไม่เกิน '+fmt(CAP)+' บาท) ก่อนเริ่มข้อเสนอ');var p=newP();p.budget=bg;ST.newBudget='';if(need){p.headEmail=h;ST.newHead=h;rememberHead(h)}ST.ps.push(p);ST.cur=p.id;go('form')}
-function addP(){var p=newP();if(ST.role==1){var h=lastHead();if(h)p.headEmail=h}ST.ps.push(p);ST.cur=p.id;go('form')}
+function startProposal(){var hs=ST.heads||[],need=ST.role==1&&hs.length>0,h=need?(ST.newHead||lastHead()):'';if(need&&!h)return alert('กรุณาเลือกหัวหน้าโครงการของข้อเสนอก่อนเริ่ม');var bg=+ST.newBudget;if(!(bg>0&&bg<=CAP))return alert('กรุณาระบุงบประมาณโครงการ (มากกว่า 0 และไม่เกิน '+fmt(CAP)+' บาท) ก่อนเริ่มข้อเสนอ');var p=newP();p.budget=bg;ST.newBudget='';if(need){p.headEmail=h;ST.newHead=h;rememberHead(h)}applyHeadToPi(p,need?h:(ST.role==5?ST.me:''));ST.ps.push(p);ST.cur=p.id;go('form')}
+function addP(){var p=newP();if(ST.role==1){var h=lastHead();if(h)p.headEmail=h}applyHeadToPi(p,p.headEmail||(ST.role==5?ST.me:''));ST.ps.push(p);ST.cur=p.id;go('form')}
 
 function sum(a,f){return a.reduce(function(s,x){return s+f(x)},0)}
 function preview(){var p=P();if(!p||!ownerEdit(p)){return ttl('🔍 พรีวิวข้อเสนอ')+'<div class="card"><div class="hint">ไม่มีข้อเสนอที่แก้ไขได้ให้พรีวิว</div><div class="row noprint"><button class="btn g" onclick="go(\'intake\')">← กลับ</button></div></div>'}
