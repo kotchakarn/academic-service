@@ -160,10 +160,53 @@ tbody tr:hover td{background:rgba(130,155,181,.16)}
   main{flex:1 1 auto!important;height:auto!important;overflow:visible!important;min-width:0;width:100%}
 }
 /* ===== end V2.12 ===== */
+/* ===== ASV70 V2.13 หน้าจอหลักและหน้าเข้าสู่ระบบ ตามแบบที่อนุมัติ ===== */
+aside .brand{display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:4px 6px 14px;border-bottom:1px solid rgba(209,197,174,.45);line-height:1.2}
+aside .brand-logo{width:46px;height:46px;flex:none}
+aside .brand-text{min-width:0}
+aside .brand-main{font-size:20px;font-weight:900;letter-spacing:1.2px;color:#F3DFA8;background:none;-webkit-text-fill-color:#F3DFA8;filter:none;display:block;padding:0;margin:0;border:0}
+aside .brand-sub{font-size:11px;opacity:.9;margin-top:4px;line-height:1.3}
+.lgs-brand{align-items:center;justify-content:center;padding:28px 26px}
+.lgs-logo{width:100%;max-width:300px;height:auto;display:block;margin:0 auto}
+.lgs-thai{text-align:center;color:#E6EDF7;line-height:1.5;margin-top:0}
+.lgs-thai .t1{font-size:14px;font-weight:700;white-space:nowrap}
+.lgs-thai .t2{font-size:12px}
+@media(max-width:760px){.lgs-logo{max-width:240px}.lgs-thai .t1{white-space:normal}}
+/* ===== end V2.13 ===== */
 </style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2A3C53"/><stop offset="55%" stop-color="#344B65"/><stop offset="100%" stop-color="#526F8F"/>
+    </linearGradient>
+    <linearGradient id="path" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#829BB5"/><stop offset="100%" stop-color="#C0CEDD"/>
+    </linearGradient>
+    <radialGradient id="gold" cx="0.35" cy="0.35" r="0.75">
+      <stop offset="0%" stop-color="#FBEFCB"/><stop offset="60%" stop-color="#F3DFA8"/><stop offset="100%" stop-color="#D1C5AE"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F3DFA8"/><stop offset="100%" stop-color="#D1C5AE"/>
+    </linearGradient>
+    <g id="mark" transform="translate(0,6)">
+      <polyline points="44,140 80,114 112,124 148,62" fill="none" stroke="url(#path)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="44" cy="140" r="8" fill="#C0CEDD"/>
+      <circle cx="80" cy="114" r="8" fill="#C0CEDD"/>
+      <circle cx="112" cy="124" r="8" fill="#C0CEDD"/>
+      <circle cx="148" cy="62" r="20" fill="none" stroke="url(#ring)" stroke-width="2"/>
+      <circle cx="148" cy="62" r="13" fill="url(#gold)"/>
+    </g>
+    <g id="sym">
+      <rect x="4" y="4" width="192" height="192" rx="44" fill="url(#bg)"/>
+      <rect x="14" y="14" width="172" height="172" rx="36" fill="none" stroke="url(#ring)" stroke-width="2"/>
+      <use href="#mark"/>
+    </g>
+  </defs>
+</svg>
+
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<aside><div class="brand"><div class="brand-main">AS-POL CMU</div><div class="brand-sub">ระบบบริหารจัดการงานบริการวิชาการรับใช้สังคม</div><div class="brand-org">คณะรัฐศาสตร์และรัฐประศาสนศาสตร์ มหาวิทยาลัยเชียงใหม่</div></div>
+<aside><div class="brand"><svg class="brand-logo" viewBox="0 0 200 200" aria-hidden="true"><use href="#sym"/></svg><div class="brand-text"><div class="brand-main">AS-POL CMU</div><div class="brand-sub">Academic Service Management System</div></div></div>
 <div class="role"><label style="color:#cfe0f5">ตัวเลือกบทบาทตัวอย่าง (โหมดทดสอบ)</label><select id="roleSel" onchange="ST.role=this.value;ST.page=NAV[0].id;save();render()"></select></div><div id="nav"></div></aside>
 <main id="main"></main>
 <script>
@@ -483,7 +526,7 @@ function emsg(e){var m=String(e&&e.message||e);return m=="PASSWORD_CHANGE_REQUIR
 function gv(i){return document.getElementById(i)}
 function api(a,d){return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({a:a,t:TOKEN,d:d||{},role:(!USER)?null:+ST.role})}).then(function(r){return r.json()}).then(function(r){if(!r.ok){if(r.e=="AUTH"){TOKEN="";try{sessionStorage.removeItem("asvt")}catch(x){}showLogin("เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง")}throw new Error(r.e)}return r.d})}
 function ind(s,m){IND=[s,m||""];var e=gv("ind");if(e){e.className="ind "+s;e.textContent=s=="ok"?"☁ บันทึกแล้ว":s=="saving"?"⏳ กำลังบันทึก…":"⚠ "+(m||"บันทึกไม่สำเร็จ")}}
-function showLogin(msg){var d=gv("lgx");if(!d){d=document.createElement("div");d.id="lgx";d.className="lgx";document.body.appendChild(d)}d.style.display="flex";d.innerHTML='<div class="lgb lgs"><div class="lgs-brand"><div class="lgs-code">AS-POL CMU</div><div class="lgs-sys">ระบบบริหารจัดการงานบริการวิชาการรับใช้สังคม</div><div class="lgs-org">คณะรัฐศาสตร์และรัฐประศาสนศาสตร์ มหาวิทยาลัยเชียงใหม่</div></div><div class="lgs-form"><h3>เข้าสู่ระบบ</h3><div id="lgm" style="color:#dc2626;min-height:20px;font-size:13px">'+esc(msg||"")+'</div><label>อีเมล</label><input id="lge" type="email" autocomplete="username"><label>รหัสผ่าน</label><input id="lgp" type="password" autocomplete="current-password" onkeydown="if(event.key==\'Enter\')doLogin()"><button class="btn" style="width:100%;margin-top:16px;height:46px" onclick="doLogin()">เข้าสู่ระบบ</button></div></div>'}
+function showLogin(msg){var d=gv("lgx");if(!d){d=document.createElement("div");d.id="lgx";d.className="lgx";document.body.appendChild(d)}d.style.display="flex";d.innerHTML='<div class="lgb lgs"><div class="lgs-brand"><svg class="lgs-logo" viewBox="0 0 480 412" aria-label="AS-POL CMU"><use href="#sym" transform="translate(110,20) scale(1.3)"/><text x="240" y="346" text-anchor="middle" font-family="Sarabun, Noto Sans Thai, sans-serif" font-size="54" font-weight="900" letter-spacing="1" fill="#F3DFA8">AS-POL CMU</text><line x1="200" y1="368" x2="280" y2="368" stroke="#D1C5AE" stroke-width="2"/><text x="240" y="402" text-anchor="middle" font-family="Sarabun, Noto Sans Thai, sans-serif" font-size="18" font-weight="600" letter-spacing="1" fill="#E6EDF7">Academic Service Management System</text></svg><div class="lgs-thai"><div class="t1">ระบบบริหารจัดการงานบริการวิชาการรับใช้สังคม</div><div class="t2">คณะรัฐศาสตร์และรัฐประศาสนศาสตร์</div><div class="t2">มหาวิทยาลัยเชียงใหม่</div></div></div><div class="lgs-form"><h3>เข้าสู่ระบบ</h3><div id="lgm" style="color:#dc2626;min-height:20px;font-size:13px">'+esc(msg||"")+'</div><label>อีเมล</label><input id="lge" type="email" autocomplete="username"><label>รหัสผ่าน</label><input id="lgp" type="password" autocomplete="current-password" onkeydown="if(event.key==\'Enter\')doLogin()"><button class="btn" style="width:100%;margin-top:16px;height:46px" onclick="doLogin()">เข้าสู่ระบบ</button></div></div>'}
 function hideLogin(){var d=gv("lgx");if(d)d.style.display="none";ST.page="dash";render()}
 function showPasswordChange(force,msg){var d=gv("lgx");if(!d){d=document.createElement("div");d.id="lgx";d.className="lgx";document.body.appendChild(d)}d.style.display="flex";d.innerHTML='<div class="lgb"><div style="font-size:38px">🔐</div><h2 style="color:var(--pri);margin:6px 0">'+(force?'ตั้งรหัสผ่านใหม่ก่อนเข้าใช้งาน':'เปลี่ยนรหัสผ่าน')+'</h2><div id="lgm" style="color:#dc2626;min-height:22px;font-size:13px">'+esc(msg||'')+'</div><label>รหัสผ่านเดิม</label><input id="oldpw" type="password" autocomplete="current-password"><label>รหัสผ่านใหม่</label><input id="newpw" type="password" autocomplete="new-password" placeholder="อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข"><label>ยืนยันรหัสผ่านใหม่</label><input id="confpw" type="password" autocomplete="new-password" onkeydown="if(event.key===\'Enter\')changePassword()"><button class="btn" style="width:100%;margin-top:14px" onclick="changePassword()">บันทึกรหัสผ่านใหม่</button>'+(force?'':'<button class="btn g" style="width:100%;margin-top:8px" onclick="hideLogin()">ยกเลิก</button>')+'</div>';}
 function changePassword(){api("password",{currentPassword:gv("oldpw").value,newPassword:gv("newpw").value,confirmPassword:gv("confpw").value}).then(function(){return load()}).then(hideLogin).catch(function(x){var m=gv("lgm");if(m)m.textContent=emsg(x)})}
