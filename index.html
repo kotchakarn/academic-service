@@ -530,7 +530,18 @@ function showLogin(msg){var d=gv("lgx");if(!d){d=document.createElement("div");d
 function hideLogin(){var d=gv("lgx");if(d)d.style.display="none";ST.page="dash";render()}
 function showPasswordChange(force,msg){var d=gv("lgx");if(!d){d=document.createElement("div");d.id="lgx";d.className="lgx";document.body.appendChild(d)}d.style.display="flex";d.innerHTML='<div class="lgb"><div style="font-size:38px">🔐</div><h2 style="color:var(--pri);margin:6px 0">'+(force?'ตั้งรหัสผ่านใหม่ก่อนเข้าใช้งาน':'เปลี่ยนรหัสผ่าน')+'</h2><div id="lgm" style="color:#dc2626;min-height:22px;font-size:13px">'+esc(msg||'')+'</div><label>รหัสผ่านเดิม</label><input id="oldpw" type="password" autocomplete="current-password"><label>รหัสผ่านใหม่</label><input id="newpw" type="password" autocomplete="new-password" placeholder="อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข"><label>ยืนยันรหัสผ่านใหม่</label><input id="confpw" type="password" autocomplete="new-password" onkeydown="if(event.key===\'Enter\')changePassword()"><button class="btn" style="width:100%;margin-top:14px" onclick="changePassword()">บันทึกรหัสผ่านใหม่</button>'+(force?'':'<button class="btn g" style="width:100%;margin-top:8px" onclick="hideLogin()">ยกเลิก</button>')+'</div>';}
 function changePassword(){api("password",{currentPassword:gv("oldpw").value,newPassword:gv("newpw").value,confirmPassword:gv("confpw").value}).then(function(){return load()}).then(hideLogin).catch(function(x){var m=gv("lgm");if(m)m.textContent=emsg(x)})}
-function doLogin(){TOKEN="";api("login",{email:gv("lge").value,password:gv("lgp").value}).then(function(r){TOKEN=r.t;try{sessionStorage.setItem("asvt",TOKEN)}catch(x){}if(r.mustChange){showPasswordChange(true,'กรุณาตั้งรหัสผ่านส่วนตัวก่อนเริ่มใช้งาน');return null}return load().then(hideLogin)}).catch(function(x){var m=gv("lgm");if(m)m.textContent=emsg(x)})}
+function doLogin(){TOKEN="";api("login",{email:gv("lge").value,password:gv("lgp").value,fy:String(ST.fy||2570)}).then(function(r){TOKEN=r.t;try{sessionStorage.setItem("asvt",TOKEN)}catch(x){}if(r.mustChange){showPasswordChange(true,'กรุณาตั้งรหัสผ่านส่วนตัวก่อนเริ่มใช้งาน');return null}return bootAfterLogin(r).then(hideLogin)}).catch(function(x){var m=gv("lgm");if(m)m.textContent=emsg(x)})}
+function bootAfterLogin(r){
+  var b=r&&r.boot;
+  if(!b||String(b.fiscalYear)!==String(ST.fy||2570))return load();
+  var u=b.user||{},primary=Number(u.role),roles=(Array.isArray(u.roles)?u.roles:[u.role]).map(Number);
+  var remembered=Number(ST.role),selected=roles.indexOf(remembered)>-1?remembered:primary;
+  if(selected!==primary)return load();
+  USER={email:u.email,name:u.name,role:primary,roles:roles};
+  ST.role=selected;
+  applyBootData(b);
+  return Promise.resolve();
+}
 function logout(){TOKEN="";USER=null;try{sessionStorage.removeItem("asvt")}catch(x){}ST.ps=[];LS={};showLogin("")}
 function applyBootData(r){
   USER=r.user||{};USER.role=+USER.role;
