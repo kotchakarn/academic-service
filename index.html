@@ -179,6 +179,31 @@ aside .brand-sub{font-size:11px;opacity:.9;margin-top:4px;line-height:1.3}
 /* ===== ASV70 V2.19 การ์ด SROI บนแดชบอร์ด ===== */
 .stats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
 /* ===== end V2.19 ===== */
+/* ===== ASV70 V2.22 Dashboard SROI สำหรับผู้บริหาร (Steel Blue) ===== */
+.sx{margin-bottom:18px}
+.sx .sxc{border-top-color:#4682B4}
+.sxt{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start;margin-bottom:10px}
+.sxf{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.sxf select{width:auto;min-width:220px;max-width:100%}
+.sxs{font-size:14px;margin-top:10px;line-height:1.6}
+.sxkg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-bottom:16px}
+.sxk{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--bd);border-top:5px solid var(--k);border-radius:16px;padding:18px;box-shadow:0 4px 16px rgba(47,95,138,.12)}
+.sxi{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:27px;background:color-mix(in srgb,var(--k) 15%,transparent);flex:none}
+.sxl{font-size:13px;color:var(--mut);font-weight:600}
+.sxv{font-size:clamp(22px,2.6vw,31px);font-weight:800;color:var(--k);line-height:1.25;overflow-wrap:anywhere}
+.sxu{font-size:.55em;font-weight:700}
+.sxtb{min-width:780px}.sxtb .btn{white-space:nowrap}
+.sxc2{font-size:11.5px;color:var(--mut);margin-top:3px;line-height:1.4}
+.sxg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,430px),1fr));gap:16px;margin-bottom:16px}
+.sxg .card{margin-bottom:0;min-width:0}
+.sxlg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin:4px 0 8px}.sxlg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.sxin .sxq{background:color-mix(in srgb,#4682B4 11%,transparent);border-left:4px solid #4682B4;border-radius:10px;padding:12px 14px;line-height:1.75;font-size:15px}
+.sxin ul{margin:10px 0 0;padding-left:20px;line-height:1.8;font-size:14px}
+.sxn{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.sxb{display:inline-block;padding:2px 10px;border-radius:99px;font-weight:700;font-size:13px}.sxb.ok{background:#dcfce7;color:#15803d}.sxb.lo{background:#ffedd5;color:#9a3412}
+.sxtb tfoot td{font-weight:700;border-top:2px solid #4682B4;border-bottom:0}
+@media(max-width:640px){.sxk{padding:14px}.sxi{width:46px;height:46px;font-size:22px}.sxf select{min-width:0;width:100%}}
+@media print{.sx .card,.sxk{break-inside:avoid;box-shadow:none}.sxg{grid-template-columns:1fr}}
+/* ===== end V2.22 ===== */
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -409,9 +434,9 @@ var sum=function(a,f){return a.reduce(function(s,p){return s+f(p)},0)},ap=ps.fil
 var wait=ps.filter(function(p){return W.indexOf(p.status)>-1}).length,pass=ps.filter(function(p){return isAp(p.status)||PS.indexOf(p.status)>-1}).length,req=sum(ps,totT),apr=sum(ap,totT),sp=sum(ps,spentT),pct=apr?Math.round(sp/apr*100):0;
 var rated=ps.map(function(p){return sroiCalc(p.sroiData&&p.sroiData.inv,p.sroiData&&p.sroiData.val)}).filter(function(c){return c}),avgS=rated.length?rated.reduce(function(s,c){return s+c.ratio},0)/rated.length:0,worth=rated.filter(function(c){return c.ratio>=1}).length;
 var K=[["📁","โครงการทั้งหมด",n,"เสนอในระบบทั้งหมด","#7c3aed"],["⏳","รอตรวจสอบ / รอพิจารณา",wait,"อยู่ระหว่างกระบวนการพิจารณา","#2563a8"],["✅","ผ่านการพิจารณา / ได้รับทุน",pass,"ผ่านและอนุมัติแล้ว","#16a34a"],["💰","วงเงินเสนอขอรวม",req,"จากทุกโครงการที่ยื่นขอ","#d97706",1],["🏦","วงเงินอนุมัติแล้ว",apr,"โครงการอนุมัติทุนขึ้นไป","#9333ea",1],["🧾","เบิกจ่ายจริงแล้ว",sp,pct+"% ของวงเงินอนุมัติ","#0e7490",1],["⭐","SROI เฉลี่ย",avgS,(rated.length?"จากโครงการที่กรอกแล้ว "+rated.length+" โครงการ":"ยังไม่มีโครงการที่กรอกค่า SROI"),"#a16207"],["🎯","โครงการที่คุ้มค่า (SROI ≥ 1)",worth,"จากโครงการที่กรอกค่า SROI "+rated.length+" โครงการ","#15803d"]];
-var h=ttl("📊 Dashboard ภาพรวมระบบ",'<span class="tag" style="background:#fff">ปีงบประมาณ '+esc(ST.fy)+'</span>'+(CLOUD?"":'<button class="btn g s" onclick="demoOn()">🧪 โหลดข้อมูลตัวอย่าง</button><button class="btn g s" onclick="demoOff()">ล้างข้อมูลตัวอย่าง</button>')+'');
+if(sroiIsExec())K=K.slice(0,6);var h=ttl("📊 Dashboard ภาพรวมระบบ",'<span class="tag" style="background:#fff">ปีงบประมาณ '+esc(ST.fy)+'</span>'+(CLOUD?"":'<button class="btn g s" onclick="demoOn()">🧪 โหลดข้อมูลตัวอย่าง</button><button class="btn g s" onclick="demoOff()">ล้างข้อมูลตัวอย่าง</button>')+'');
 h+='<div class="kg">'+K.map(function(k){return'<div class="kp" style="--k:'+k[4]+'"><div class="ki">'+k[0]+'</div><div><div class="kl">'+k[1]+'</div><div class="kn"><span class="kv" data-v="'+k[2]+'" data-m="'+(k[5]?1:0)+'">'+(k[5]?"฿":"")+fmt(k[2])+'</span></div><div class="ks">'+k[3]+"</div></div></div>"}).join("")+"</div>";
-h+=sroiDashHtml(ps);
+h+=(sroiIsExec()?sroiExecHtml():sroiDashHtml(ps));
 var pd=PH.map(function(g,i){return[(i+1)+". "+g.t.split(" ").slice(2).join(" "),ps.filter(function(p){return g.i.indexOf(p.status)>-1}).length,PC[i]]});
 h+='<div class="cg"><div class="card"><h3>🍩 สัดส่วนโครงการแยกตามระยะ</h3><div class="dn" style="position:relative;background:conic-gradient('+cg(pd,n)+')"><div class="dh"><b>'+n+"</b>โครงการ</div>"+donutNums(pd,n)+"</div>"+lgd(pd)+"</div>";
 var dm={};ps.forEach(function(p){var k=(p.pi.dept||"").trim()||"ไม่ระบุสังกัด",o=dm[k]||(dm[k]={r:0,a:0});o.r+=totT(p);if(isAp(p.status))o.a+=totT(p)});
@@ -1012,4 +1037,202 @@ function executiveSummaryPrint(){
   win.document.write(h);
   win.document.close();
 }
+/* ===== ASV70 V2.22 Dashboard SROI สำหรับผู้บริหาร ===== */
+/* ข้อมูลมาจาก API sroiSummary (อ่านอย่างเดียว) ไม่เก็บลง localStorage และไม่แก้ไขข้อมูลโครงการ */
+var SROI_FACULTY='คณะรัฐศาสตร์และรัฐประศาสนศาสตร์';
+var SROI_X={key:'',rows:null,years:[],pend:{},loading:false,err:'',asOf:0,fy:'all',q:'',sort:'desc',scope:[]};
+function sroiIsExec(){return [0,2,4].indexOf(+ST.role)>-1}
+function sroiC(v){return Math.round((+v||0)*100)}
+function sroiAgg(rows){
+  var ic=0,vc=0;rows.forEach(function(r){ic+=sroiC(r.inv);vc+=sroiC(r.val)});
+  if(!rows.length||ic<=0)return{n:rows.length,inv:null,val:null,ratio:null,net:null};
+  return{n:rows.length,inv:ic/100,val:vc/100,ratio:vc/ic,net:(vc-ic)/100};
+}
+function sroiR2(n){return(Math.round(n*100)/100).toFixed(2)}
+function sroiM(n){return n==null?'N/A':sroiMoney(n)}
+function sroiShort(n){var a=Math.abs(n);if(a>=1e6)return(n/1e6).toFixed(2).replace(/\.?0+$/,'')+' ล้าน';return Math.round(n).toLocaleString('en-US')}
+function sroiNice(max,ticks){
+  if(!(max>0))return{max:1,step:1/ticks};
+  var raw=max/ticks,mag=Math.pow(10,Math.floor(Math.log(raw)/Math.LN10)),f=raw/mag,nf=f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10,step=nf*mag;
+  return{max:Math.ceil(max/step-1e-9)*step,step:step};
+}
+function sroiLocalData(){
+  var rows=[],pend={};
+  (ST.ps||[]).forEach(function(p){
+    if(/ยกเลิก|ไม่ผ่าน/.test(String(p.status||'')))return;
+    var y=fyOf(p),c=sroiCalc(p.sroiData&&p.sroiData.inv,p.sroiData&&p.sroiData.val);
+    if(c)rows.push({id:p.id,code:p.code||'',fy:y,title:p.th||'',owner:(p.pi&&p.pi.name)||'',dept:(p.pi&&p.pi.dept)||'',inv:c.inv,val:c.val,ratio:c.ratio,net:c.net});
+    else if(isAp(p.status))pend[y]=(pend[y]||0)+1;
+  });
+  var ys=(ST.fiscalYears||[]).map(String);
+  rows.forEach(function(r){if(ys.indexOf(r.fy)<0)ys.push(r.fy)});
+  return{rows:rows,years:ys.sort(),pend:pend};
+}
+function sroiXLoad(force){
+  var key=((USER&&USER.email)||'local')+'|'+(+ST.role);
+  if(SROI_X.key!==key)SROI_X={key:key,rows:null,years:[],pend:{},loading:false,err:'',asOf:0,fy:'all',q:'',sort:'desc',scope:[]};
+  var X=SROI_X;
+  if(X.lastFy!==String(ST.fy)){X.lastFy=String(ST.fy);X.fy=String(ST.fy)}   // ค่าเริ่มต้น = ปีงบประมาณปัจจุบันของระบบ (เปลี่ยนตามเมื่อสลับปีด้านบน)
+  if(!CLOUD||!USER){var d=sroiLocalData();X.rows=d.rows;X.years=d.years;X.pend=d.pend;X.asOf=Date.now();return}
+  if(X.loading)return;
+  var stale=!X.rows||Date.now()-X.asOf>30000;
+  if(!force&&(!stale||(X.err&&!X.rows)))return;
+  X.loading=true;
+  api('sroiSummary',{}).then(function(r){
+    if(SROI_X!==X)return;
+    X.rows=r.rows||[];X.years=(r.years||[]).map(String).sort();X.pend=r.pend||{};X.asOf=r.asOf||Date.now();X.err='';
+  }).catch(function(e){
+    if(SROI_X!==X)return;
+    X.err=emsg(e);X.asOf=Date.now();
+  }).then(function(){
+    if(SROI_X!==X)return;
+    X.loading=false;
+    if(ST.page==='dash'&&sroiIsExec())sroiXRedraw();
+  });
+}
+function sroiExecHtml(){sroiXLoad(false);return'<div id="sroi-exec" class="sx">'+sroiXInner()+'</div>'}
+function sroiXRedraw(){var el=document.getElementById('sroi-exec');if(el)el.innerHTML=sroiXInner()}
+function sroiXRefresh(){SROI_X.err='';sroiXLoad(true);sroiXRedraw()}
+function sroiXFy(v){SROI_X.fy=v;sroiXRedraw()}
+function sroiXSearch(v){SROI_X.q=v;sroiXPaint()}
+function sroiXSort(v){SROI_X.sort=v;sroiXPaint()}
+function sroiXPaint(){
+  var b=document.getElementById('sx-tb'),c=document.getElementById('sx-cnt');
+  if(b)b.innerHTML=sroiXBody();
+  if(c)c.textContent=sroiXList().length+' จาก '+(SROI_X.scope||[]).length+' โครงการ';
+}
+function sroiXList(){
+  var X=SROI_X,q=String(X.q||'').trim().toLowerCase(),m=X.sort;
+  var a=(X.scope||[]).filter(function(r){return!q||(String(r.title)+' '+String(r.code)+' '+String(r.owner)).toLowerCase().indexOf(q)>-1});
+  a.sort(function(p,r){return m==='asc'?p.ratio-r.ratio:m==='name'?String(p.title).localeCompare(String(r.title),'th'):r.ratio-p.ratio});
+  return a;
+}
+function sroiXBody(){
+  var a=sroiXList(),all=SROI_X.fy==='all';
+  if(!a.length)return'<tr><td colspan="8" class="hint" style="text-align:center">ไม่พบโครงการที่ตรงกับเงื่อนไข</td></tr>';
+  return a.map(function(r,i){
+    return'<tr><td>'+(i+1)+'</td><td><b>'+esc(r.title||'(ไม่มีชื่อ)')+'</b><div class="hint">'+esc(r.code)+(all?' · ปีงบประมาณ '+esc(r.fy):'')+'</div></td><td>'+esc(r.owner||'-')+'</td><td class="sxn">'+sroiMoney(r.inv)+'</td><td class="sxn">'+sroiMoney(r.val)+'</td><td class="sxn"><span class="sxb '+(r.ratio>=1?'ok':'lo')+'">'+sroiR2(r.ratio)+'</span></td><td class="sxn" style="color:'+(r.net>=0?'#15803d':'#b91c1c')+'">'+sroiMoney(r.net)+'</td><td class="noprint" data-sx-ctl="1"><button class="btn s g" onclick="sroiOpen(\''+esc(String(r.id))+'\',\''+esc(r.fy)+'\')">รายละเอียด</button></td></tr>';
+  }).join('');
+}
+function sroiOpen(id,fy){
+  function open(){var p=(ST.ps||[]).filter(function(x){return String(x.id)===String(id)})[0];if(!p){alert('ไม่พบโครงการนี้ หรือไม่มีสิทธิ์เปิดดูรายละเอียด');return}ST.cur=p.id;go('form')}
+  if(String(fy)===String(ST.fy)){open();return}
+  clearTimeout(DT);
+  flush().then(function(){ST.fy=String(fy);ST.cur=null;ST.followId=null;return load()}).then(open).catch(function(e){alert(emsg(e))});
+}
+function sroiBarSvg(Ys,sel){
+  var G=Ys.length,W=Math.max(360,90+G*110),H=300,L=64,R=14,T=26,B=46,pw=W-L-R,ph=H-T-B,mx=0;
+  Ys.forEach(function(a){mx=Math.max(mx,a.inv,a.val)});
+  var nz=sroiNice(mx,4),gw=pw/G,bw=Math.min(40,gw*0.36),i,v,y;
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="กราฟแท่งเปรียบเทียบงบประมาณลงทุนกับมูลค่าผลลัพธ์ทางสังคมรายปีงบประมาณ" style="width:100%;min-width:'+W+'px;height:auto;display:block;font-family:inherit">';
+  s+='<text x="'+(L-6)+'" y="'+(T-12)+'" text-anchor="end" style="font-size:11px;fill:var(--mut)">บาท</text>';
+  for(i=0;i<=Math.round(nz.max/nz.step);i++){
+    v=i*nz.step;y=T+ph-(v/nz.max*ph);
+    s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'" style="stroke:var(--bd)"/><text x="'+(L-6)+'" y="'+(y+4).toFixed(1)+'" text-anchor="end" style="font-size:11px;fill:var(--mut)">'+sroiShort(v)+'</text>';
+  }
+  Ys.forEach(function(a,k){
+    var cx=L+gw*k+gw/2,op=(sel==='all'||sel===a.y)?1:0.35;
+    [[a.inv,'#B0C4DE','งบประมาณลงทุน',cx-bw-2],[a.val,'#2F6FA0','มูลค่าผลลัพธ์ทางสังคม',cx+2]].forEach(function(b){
+      var hh=Math.max(1,b[0]/nz.max*ph),yy=T+ph-hh;
+      s+='<g opacity="'+op+'"><rect x="'+b[3].toFixed(1)+'" y="'+yy.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+hh.toFixed(1)+'" rx="3" fill="'+b[1]+'" style="stroke:#4682B4;stroke-width:.6"><title>ปีงบประมาณ '+esc(a.y)+' · '+b[2]+' '+sroiMoney(b[0])+' บาท</title></rect><text x="'+(b[3]+bw/2).toFixed(1)+'" y="'+(yy-4).toFixed(1)+'" text-anchor="middle" style="font-size:10px;font-weight:700;fill:var(--tx)">'+sroiShort(b[0])+'</text></g>';
+    });
+    s+='<text x="'+cx.toFixed(1)+'" y="'+(H-B+17)+'" text-anchor="middle" style="font-size:12px;font-weight:'+(sel===a.y?800:600)+';fill:var(--tx)">ปี '+esc(a.y)+'</text><text x="'+cx.toFixed(1)+'" y="'+(H-B+31)+'" text-anchor="middle" style="font-size:10px;fill:var(--mut)">'+a.n+' โครงการ</text>';
+  });
+  return s+'</svg>';
+}
+function sroiLineSvg(Ys,sel){
+  var G=Ys.length,W=Math.max(360,90+G*110),H=300,L=56,R=18,T=26,B=46,pw=W-L-R,ph=H-T-B,mx=1;
+  Ys.forEach(function(a){mx=Math.max(mx,a.ratio)});
+  var nz=sroiNice(mx*1.08,4),gw=pw/G,i,v,y,pts=[];
+  function py(r){return T+ph-(r/nz.max*ph)}
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="กราฟเส้นแนวโน้มผลตอบแทนทางสังคม (SROI) รายปีงบประมาณ" style="width:100%;min-width:'+W+'px;height:auto;display:block;font-family:inherit">';
+  s+='<text x="'+(L-6)+'" y="'+(T-12)+'" text-anchor="end" style="font-size:11px;fill:var(--mut)">เท่า</text>';
+  for(i=0;i<=Math.round(nz.max/nz.step);i++){
+    v=i*nz.step;y=py(v);
+    s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'" style="stroke:var(--bd)"/><text x="'+(L-6)+'" y="'+(y+4).toFixed(1)+'" text-anchor="end" style="font-size:11px;fill:var(--mut)">'+(Math.round(v*100)/100)+'</text>';
+  }
+  y=py(1);
+  s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="#b45309" stroke-width="1.5" stroke-dasharray="6 4"/><text x="'+(W-R)+'" y="'+(y-5).toFixed(1)+'" text-anchor="end" style="font-size:10px;font-weight:700;fill:#b45309">จุดคุ้มทุน 1.00 เท่า</text>';
+  Ys.forEach(function(a,k){pts.push([L+gw*k+gw/2,py(a.ratio)])});
+  if(G>1)s+='<polyline fill="none" stroke="#2F6FA0" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="'+pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' ')+'"/>';
+  Ys.forEach(function(a,k){
+    var p=pts[k],on=sel===a.y;
+    s+='<g><circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(on?8:5)+'" fill="#fff" stroke="#2F6FA0" stroke-width="'+(on?3.5:2.5)+'"><title>ปีงบประมาณ '+esc(a.y)+' · SROI '+sroiR2(a.ratio)+' เท่า</title></circle><text x="'+p[0].toFixed(1)+'" y="'+Math.max(T+8,p[1]-(on?14:11)).toFixed(1)+'" text-anchor="middle" style="font-size:12px;font-weight:800;fill:var(--tx)">'+sroiR2(a.ratio)+'</text></g>';
+    s+='<text x="'+p[0].toFixed(1)+'" y="'+(H-B+17)+'" text-anchor="middle" style="font-size:12px;font-weight:'+(on?800:600)+';fill:var(--tx)">ปี '+esc(a.y)+'</text>';
+  });
+  return s+'</svg>';
+}
+function sroiXInsight(scope,A,sel,Ys,pend){
+  var h='<div class="card sxin"><h3>📝 สรุปผลสำหรับผู้บริหาร (Executive Insight)</h3>';
+  if(!A.n||A.ratio==null){
+    return h+'<div class="sxq">ยังไม่มีโครงการที่บันทึกผลประเมิน SROI สมบูรณ์ในปีงบประมาณที่เลือก จึงยังไม่สามารถสรุปผลได้ (N/A)</div>'+(pend?'<ul><li>มี '+pend+' โครงการที่ได้รับทุนแล้วแต่ยังไม่บันทึกผลประเมิน SROI ครบถ้วน</li></ul>':'')+'</div>';
+  }
+  var inScope=Ys.filter(function(a){return sel==='all'||a.y===sel}),
+      per=sel!=='all'?'ปีงบประมาณ '+sel:(inScope.length>1?'ปีงบประมาณ '+inScope[0].y+'–'+inScope[inScope.length-1].y+' (รวมทุกปีงบประมาณที่มีข้อมูล)':'ปีงบประมาณ '+inScope[0].y),
+      z=sroiR2(A.ratio);
+  h+='<div class="sxq">ใน'+per+' '+SROI_FACULTY+' ลงทุนงบประมาณในโครงการบริการวิชาการรวม <b>'+sroiMoney(A.inv)+'</b> บาท สามารถสร้างมูลค่าผลลัพธ์ทางสังคมรวม <b>'+sroiMoney(A.val)+'</b> บาท คิดเป็นผลตอบแทนทางสังคม <b>'+z+'</b> เท่า หมายความว่าการลงทุนทุก 1 บาท สามารถสร้างมูลค่าทางสังคมได้ '+z+' บาท <span class="hint">(จากโครงการที่ประเมิน SROI สมบูรณ์ '+A.n+' โครงการ)</span></div><ul>';
+  if(Ys.length<2){
+    h+='<li>ขณะนี้มีข้อมูลเพียงปีงบประมาณ '+esc(Ys[0].y)+' ปีเดียว จึงยังเปรียบเทียบมูลค่าและแนวโน้มระหว่างปีไม่ได้</li>';
+  }else{
+    var bv=Math.max.apply(null,Ys.map(function(a){return sroiC(a.val)})),
+        bvs=Ys.filter(function(a){return sroiC(a.val)===bv}),
+        br=Math.max.apply(null,Ys.map(function(a){return Math.round(a.ratio*100)})),
+        brs=Ys.filter(function(a){return Math.round(a.ratio*100)===br}),
+        last=Ys[Ys.length-1],prev=Ys[Ys.length-2],df=Math.round(last.ratio*100)-Math.round(prev.ratio*100);
+    h+='<li>ปีงบประมาณที่สร้างมูลค่าทางสังคมรวมได้สูงสุด: <b>'+bvs.map(function(a){return esc(a.y)}).join(', ')+'</b> ('+sroiMoney(bv/100)+' บาท)</li>';
+    h+='<li>ปีงบประมาณที่มีค่า SROI สูงสุด: <b>'+brs.map(function(a){return esc(a.y)}).join(', ')+'</b> ('+sroiR2(br/100)+' เท่า)</li>';
+    h+='<li>แนวโน้มผลตอบแทนทางสังคม (เทียบปีล่าสุดกับปีก่อนหน้าที่มีข้อมูล): <b>'+(df>0?'เพิ่มขึ้น':df<0?'ลดลง':'ทรงตัว')+'</b> จาก '+sroiR2(prev.ratio)+' เท่า (ปี '+esc(prev.y)+') เป็น '+sroiR2(last.ratio)+' เท่า (ปี '+esc(last.y)+')'+(df?' ('+(df>0?'+':'−')+sroiR2(Math.abs(df)/100)+' เท่า)':'')+'</li>';
+  }
+  var ok=scope.filter(function(r){return r.ratio>=1}).length,top=scope.slice().sort(function(a,b){return b.ratio-a.ratio})[0],ties=scope.filter(function(r){return Math.round(r.ratio*100)===Math.round(top.ratio*100)}).length-1;
+  h+='<li>โครงการที่ให้ผลตอบแทนทางสังคมไม่ต่ำกว่าจุดคุ้มทุน (SROI ≥ 1): <b>'+ok+'</b> จาก '+scope.length+' โครงการ</li>';
+  h+='<li>โครงการที่มีค่า SROI สูงสุด: '+esc(top.title||top.code)+' ('+sroiR2(top.ratio)+' เท่า'+(ties>0?' เท่ากับอีก '+ties+' โครงการ':'')+')</li>';
+  if(pend)h+='<li>มี '+pend+' โครงการที่ได้รับทุนแล้วแต่ยังไม่บันทึกผลประเมิน SROI ครบถ้วน จึงยังไม่ถูกรวมในตัวเลขข้างต้น</li>';
+  return h+'</ul></div>';
+}
+function sroiXInner(){
+  var X=SROI_X,rows=X.rows;
+  var head='<div class="card sxc"><div class="sxt"><div><h3 style="margin:0">🏛️ Dashboard ผลตอบแทนทางสังคม (SROI)</h3><div class="hint">ใช้ข้อมูลจริงจากฐานข้อมูลโครงการในระบบ เฉพาะโครงการที่บันทึกผลประเมิน SROI สมบูรณ์แล้ว</div></div><div class="row noprint" data-sx-ctl="1"><button class="btn g s" onclick="sroiXRefresh()">🔄 รีเฟรช</button><button class="btn s" onclick="sroiXPrint()">🖨️ พิมพ์ / บันทึก PDF</button></div></div>';
+  if(!rows)return head+(X.err?'<div style="color:var(--bad)">โหลดข้อมูล SROI ไม่สำเร็จ: '+esc(X.err)+' <button class="btn s g noprint" data-sx-ctl="1" onclick="sroiXRefresh()">ลองใหม่</button></div>':'<div class="hint">กำลังโหลดข้อมูล SROI ...</div>')+'</div>';
+  var ys=(X.years||[]).slice();
+  rows.forEach(function(r){if(ys.indexOf(r.fy)<0)ys.push(r.fy)});
+  ys.sort();
+  var sel=X.fy;if(sel!=='all'&&ys.indexOf(sel)<0)sel=X.fy='all';
+  var scope=sel==='all'?rows:rows.filter(function(r){return r.fy===sel});
+  X.scope=scope;
+  var A=sroiAgg(scope),pend=0;
+  if(sel==='all')Object.keys(X.pend||{}).forEach(function(k){pend+=+X.pend[k]||0});else pend=+(X.pend||{})[sel]||0;
+  var opts='<option value="all"'+(sel==='all'?' selected':'')+'>ทุกปีงบประมาณ ('+rows.length+' โครงการ)</option>'+ys.map(function(y){var c=rows.filter(function(r){return r.fy===y}).length;return'<option value="'+esc(y)+'"'+(sel===y?' selected':'')+'>ปีงบประมาณ '+esc(y)+' ('+c+' โครงการ)</option>'}).join('');
+  head+='<div class="sxf noprint" data-sx-ctl="1"><label for="sx-fy"><b>เลือกปีงบประมาณ</b></label><select id="sx-fy" onchange="sroiXFy(this.value)">'+opts+'</select>'+(X.loading?'<span class="hint">กำลังอัปเดตข้อมูล...</span>':'')+(X.err?'<span class="hint" style="color:var(--bad)">อัปเดตไม่สำเร็จ: '+esc(X.err)+'</span>':'')+'</div>';
+  head+='<div class="sxs"><b>'+(sel==='all'?'แสดงข้อมูลทุกปีงบประมาณ':'แสดงข้อมูลปีงบประมาณ '+esc(sel))+'</b> · จำนวนโครงการที่นำมาประเมิน SROI: <b>'+A.n+' โครงการ</b>'+(pend?' <span class="hint">(ยังไม่รวม '+pend+' โครงการที่ได้รับทุนแล้วแต่ยังไม่บันทึกผลประเมิน SROI ครบ)</span>':'')+'</div></div>';
+  var net=A.net,K=[
+    ['💼','งบประมาณลงทุนรวม (Total Investment)',sroiM(A.inv)+(A.inv==null?'':'<span class="sxu"> บาท</span>'),'รวมเงินลงทุนของโครงการที่ประเมิน SROI แล้ว','#4682B4'],
+    ['🌱','มูลค่าผลลัพธ์ทางสังคมรวม (Total Social Value)',sroiM(A.val)+(A.val==null?'':'<span class="sxu"> บาท</span>'),'รวมมูลค่าผลลัพธ์ทางสังคมของทุกโครงการที่ประเมินแล้ว','#3A8DB0'],
+    ['📈','ผลตอบแทนทางสังคมรวม (Overall SROI)',A.ratio==null?'N/A':sroiR2(A.ratio)+'<span class="sxu"> เท่า</span>','มูลค่าผลลัพธ์รวม ÷ งบลงทุนรวม (คำนวณจากยอดรวม ไม่ใช่ค่าเฉลี่ย SROI รายโครงการ)','#5A78B8'],
+    ['⚖️','มูลค่าผลตอบแทนสุทธิ (Net Social Value)',net==null?'N/A':sroiMoney(net)+'<span class="sxu"> บาท</span>','มูลค่าผลลัพธ์รวม − งบลงทุนรวม',net!=null&&net<0?'#b91c1c':'#15803d']
+  ];
+  var h=head+'<div class="sxkg">'+K.map(function(k){return'<div class="sxk" style="--k:'+k[4]+'"><div class="sxi">'+k[0]+'</div><div><div class="sxl">'+k[1]+'</div><div class="sxv">'+k[2]+'</div><div class="sxc2">'+k[3]+'</div></div></div>'}).join('')+'</div>';
+  var Ys=ys.map(function(y){var a=sroiAgg(rows.filter(function(r){return r.fy===y}));a.y=y;return a}).filter(function(a){return a.n>0});
+  if(Ys.length){
+    h+='<div class="sxg"><div class="card"><h3>📊 เปรียบเทียบงบประมาณลงทุนกับมูลค่าผลลัพธ์ทางสังคม</h3><div class="sxlg"><span><i style="background:#B0C4DE;border:1px solid #4682B4"></i>งบประมาณลงทุนรวม</span><span><i style="background:#2F6FA0"></i>มูลค่าผลลัพธ์ทางสังคมรวม</span>'+(sel==='all'?'':'<span>ปีที่เลือกแสดงเข้ม ปีอื่นแสดงจาง</span>')+'</div><div class="wrap">'+sroiBarSvg(Ys,sel)+'</div></div>';
+    h+='<div class="card"><h3>📈 แนวโน้มผลตอบแทนทางสังคม (SROI Trend)</h3><div class="sxlg"><span><i style="background:#2F6FA0"></i>SROI รวมของแต่ละปี (เท่า)</span><span><i style="background:#b45309"></i>จุดคุ้มทุน (1.00 เท่า)</span></div><div class="wrap">'+sroiLineSvg(Ys,sel)+'</div></div></div>';
+    h+='<div class="card"><h3>🧮 สรุปตัวเลขรายปีงบประมาณ</h3><div class="wrap"><table><tr><th>ปีงบประมาณ</th><th class="sxn">โครงการ</th><th class="sxn">งบประมาณลงทุน (บาท)</th><th class="sxn">มูลค่าผลลัพธ์ทางสังคม (บาท)</th><th class="sxn">SROI (เท่า)</th><th class="sxn">ผลตอบแทนสุทธิ (บาท)</th></tr>'+Ys.map(function(a){return'<tr'+(sel===a.y?' style="font-weight:700"':'')+'><td>'+esc(a.y)+'</td><td class="sxn">'+a.n+'</td><td class="sxn">'+sroiMoney(a.inv)+'</td><td class="sxn">'+sroiMoney(a.val)+'</td><td class="sxn">'+sroiR2(a.ratio)+'</td><td class="sxn">'+sroiMoney(a.net)+'</td></tr>'}).join('')+'</table></div></div>';
+  }else{
+    h+='<div class="card"><div class="hint">ยังไม่มีข้อมูลสำหรับแสดงกราฟ (ยังไม่มีโครงการที่บันทึกผลประเมิน SROI สมบูรณ์)</div></div>';
+  }
+  h+=sroiXInsight(scope,A,sel,Ys,pend);
+  h+='<div class="card"><h3>🗂️ รายละเอียดรายโครงการ</h3><div class="row noprint" data-sx-ctl="1" style="margin-bottom:10px"><input type="search" placeholder="🔎 ค้นหาชื่อโครงการ / รหัส / ผู้รับผิดชอบ" value="'+esc(X.q)+'" oninput="sroiXSearch(this.value)" style="max-width:340px"><select onchange="sroiXSort(this.value)" style="max-width:240px"><option value="desc"'+(X.sort==='desc'?' selected':'')+'>เรียง SROI มาก → น้อย</option><option value="asc"'+(X.sort==='asc'?' selected':'')+'>เรียง SROI น้อย → มาก</option><option value="name"'+(X.sort==='name'?' selected':'')+'>เรียงตามชื่อโครงการ</option></select><span class="hint" id="sx-cnt">'+sroiXList().length+' จาก '+scope.length+' โครงการ</span></div><div class="wrap"><table class="sxtb"><thead><tr><th>ลำดับ</th><th>ชื่อโครงการ</th><th>ผู้รับผิดชอบโครงการ</th><th class="sxn">งบประมาณลงทุน (บาท)</th><th class="sxn">มูลค่าผลลัพธ์ทางสังคม (บาท)</th><th class="sxn">SROI (เท่า)</th><th class="sxn">ผลตอบแทนสุทธิ (บาท)</th><th class="noprint" data-sx-ctl="1"></th></tr></thead><tbody id="sx-tb">'+sroiXBody()+'</tbody>'+(A.n?'<tfoot><tr><td></td><td colspan="2">รวมทั้งหมดในขอบเขตที่เลือก ('+A.n+' โครงการ)</td><td class="sxn">'+sroiMoney(A.inv)+'</td><td class="sxn">'+sroiMoney(A.val)+'</td><td class="sxn">'+sroiR2(A.ratio)+'</td><td class="sxn">'+sroiMoney(A.net)+'</td><td class="noprint" data-sx-ctl="1"></td></tr></tfoot>':'')+'</table></div><div class="hint" style="margin-top:8px">เงินลงทุนในตารางนี้คือเงินลงทุนที่บันทึกในผลประเมิน SROI ของแต่ละโครงการ (ฐานข้อมูลเดียวกับที่ใช้คำนวณ SROI) ไม่ได้นำงบประมาณจากแหล่งอื่นมารวมซ้ำ</div></div>';
+  return h;
+}
+function sroiXPrint(){
+  var el=document.getElementById('sroi-exec');if(!el)return;
+  var c=el.cloneNode(true);
+  Array.prototype.forEach.call(c.querySelectorAll('[data-sx-ctl]'),function(n){n.parentNode.removeChild(n)});
+  var css=Array.prototype.map.call(document.querySelectorAll('style'),function(s){return s.outerHTML}).join('');
+  var win=window.open('','_blank','width=1000,height=800');
+  if(!win){alert('เบราว์เซอร์บล็อกหน้าต่างพิมพ์ กรุณาอนุญาต pop-up แล้วลองอีกครั้ง');return}
+  var fyT=SROI_X.fy==='all'?'ทุกปีงบประมาณ':'ปีงบประมาณ '+SROI_X.fy;
+  win.document.write('<!DOCTYPE html><html lang="th" data-theme="light"><head><meta charset="utf-8"><title>รายงาน SROI สำหรับผู้บริหาร — '+esc(fyT)+'</title><link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">'+css+'<style>body{display:block!important;height:auto!important;padding:20px!important;background:#fff!important}.sx .card,.sxk{transform:none!important}@media print{.sxpb{display:none}}</style></head><body><div class="sxpb" style="margin-bottom:12px"><button class="btn" onclick="window.print()">🖨️ พิมพ์เอกสาร / บันทึกเป็น PDF</button></div><h1 style="font-size:18px;margin:0 0 2px;color:#173C6E">รายงานผลตอบแทนทางสังคม (SROI) สำหรับผู้บริหาร</h1><div class="hint" style="margin-bottom:14px">'+SROI_FACULTY+' มหาวิทยาลัยเชียงใหม่ · '+esc(fyT)+' · ข้อมูล ณ วันที่ '+thDate(new Date())+'</div>'+c.innerHTML+'</body></html>');
+  win.document.close();
+}
+/* ===== end V2.22 ===== */
 </script></body></html>
