@@ -193,7 +193,7 @@ aside .brand-sub{font-size:11px;opacity:.9;margin-top:4px;line-height:1.3}
 .sxu{font-size:.55em;font-weight:700}
 .sxtb{min-width:780px}.sxtb .btn{white-space:nowrap}
 .sxc2{font-size:11.5px;color:var(--mut);margin-top:3px;line-height:1.4}
-.sxg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,430px),1fr));gap:16px;margin-bottom:16px}
+.sxg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px;margin-bottom:14px}.sxg .wrap{max-width:560px}
 .sxg .card{margin-bottom:0;min-width:0}
 .sxlg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin:4px 0 8px}.sxlg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .sxin .sxq{background:color-mix(in srgb,#4682B4 11%,transparent);border-left:4px solid #4682B4;border-radius:10px;padding:12px 14px;line-height:1.75;font-size:15px}
@@ -694,7 +694,7 @@ var AUTO_SAVE_DELAY=8000;
 var _sv0=save;save=function(){if(!CLOUD)return _sv0();clearTimeout(DT);ind("saving");DT=setTimeout(function(){flush().catch(function(){});},AUTO_SAVE_DELAY);};
 function manualSave(){if(!CLOUD){_sv0();alert("บันทึกร่างแล้ว");return;}clearTimeout(DT);flush().then(function(){alert("บันทึกร่างแล้ว");}).catch(function(e){alert("บันทึกไม่สำเร็จ: "+emsg(e));});}
 var _n2=norm;norm=function(p){_n2(p);if(CLOUD&&!p.sv){p.code="(รอรหัส)";p.owner=ST.me}};
-var _ap=applySt;applySt=function(id,v,n){if(!CLOUD)return _ap(id,v,n);ind("saving");return flush().then(function(){return api("status",{id:id,to:v,note:n||"",base:G(id).ver})}).then(function(r){upd(r.p);ind("ok");mclose();if(v==="ส่งข้อเสนอแล้ว"||v==="รอหัวหน้าโครงการยืนยัน"||v==="ส่งกลับแก้ไขข้อเสนอ"&&ST.role==5)ST.page="list";render();return r}).catch(function(e){alert(emsg(e));ind("err",emsg(e));return load().then(function(){mclose();render()}).catch(function(){})})};
+var _ap=applySt;applySt=function(id,v,n){if(!CLOUD)return _ap(id,v,n);ind("saving");return flush().then(function(){return api("status",{id:id,to:v,note:n||"",base:G(id).ver})}).then(function(r){upd(r.p);ind("ok");mclose();if(v==="ส่งข้อเสนอแล้ว"||v==="รอหัวหน้าโครงการยืนยัน"||v==="ส่งกลับแก้ไขข้อเสนอ"&&ST.role==5)ST.page="list";render();if(r.notify){if(r.notify.sent)alert("✉ ส่งอีเมลแจ้งเตือนแล้วไปที่ "+r.notify.to.join(", "));else if(r.notify.reason&&r.notify.reason.indexOf("ปิดอยู่")<0&&r.notify.reason.indexOf("ไม่อยู่ในรายการ")<0)alert("ไม่ได้ส่งอีเมลแจ้งเตือน: "+r.notify.reason)}return r}).catch(function(e){alert(emsg(e));ind("err",emsg(e));return load().then(function(){mclose();render()}).catch(function(){})})};
 var _rv=rv,_rn=rn,REVIEW_PROMISE=null,REVIEW_AGAIN=false;
 function syncReview(){if(!CLOUD||!USER)return Promise.resolve();if(REVIEW_PROMISE){REVIEW_AGAIN=true;return REVIEW_PROMISE}var p=P(),r=p&&p.rev[rname()];if(!r)return Promise.resolve();REVIEW_PROMISE=api("review",{id:p.id,s:r.s,n:r.n}).then(function(x){if(x&&x.ver!=null)p.ver=x.ver;LS[p.id]=JSON.stringify(p);ind("ok")}).then(function(){REVIEW_PROMISE=null;if(REVIEW_AGAIN){REVIEW_AGAIN=false;return syncReview()}}).catch(function(e){REVIEW_PROMISE=null;REVIEW_AGAIN=false;ind("err",emsg(e));alert(emsg(e))});return REVIEW_PROMISE}
 function rsync(){if(!CLOUD)return;clearTimeout(RT);RT=setTimeout(syncReview,4000)}
@@ -741,13 +741,14 @@ function ntGet(pre){return STAT.filter(function(x,i){var e=document.getElementBy
 function notifyCard(){var n=ST.notify||{on:false,url:"",def:NT_REC,per:{}},per=n.per||{};
 var rows=(ST.ps||[]).map(function(p,k){var has=Object.prototype.hasOwnProperty.call(per,String(p.id)),lst=has?per[String(p.id)]:n.def,mode=!has?"inherit":(lst.length?"custom":"off");
 return'<tr><td><b>'+esc(p.code||"-")+'</b></td><td>'+esc(p.th||"(ยังไม่ตั้งชื่อ)")+'<div class="hint">'+esc(p.owner||"")+' · '+esc(p.status||"")+'</div></td><td style="min-width:170px"><select id="ntm_'+k+'" style="width:auto"><option value="inherit"'+(mode==="inherit"?" selected":"")+'>ใช้ค่าเริ่มต้น</option><option value="custom"'+(mode==="custom"?" selected":"")+'>กำหนดเอง</option><option value="off"'+(mode==="off"?" selected":"")+'>ไม่แจ้งโครงการนี้</option></select></td><td><details><summary style="cursor:pointer;color:var(--pri,#2563eb)">เลือกสถานะ</summary>'+ntBtns("ntp"+k+"_")+ntChecks("ntp"+k+"_",lst,"document.getElementById(\'ntm_"+k+"\').value=\'custom\'")+'</details></td></tr>'}).join("");
-return'<div class="card"><h3>🔔 การแจ้งเตือนทางอีเมลถึงเจ้าของโครงการ</h3><div class="hint" style="margin-bottom:8px">เมื่อสถานะโครงการเปลี่ยน ระบบส่งอีเมลถึงเจ้าของโครงการ (ผู้ยื่นข้อเสนอ) ตามสถานะที่ติ๊กไว้ ไม่ส่งถ้าเจ้าของโครงการเป็นผู้เปลี่ยนสถานะเอง และการส่งอีเมลไม่สำเร็จจะไม่กระทบการเปลี่ยนสถานะ</div>'+
+return'<div class="card"><h3>🔔 การแจ้งเตือนทางอีเมลถึงหัวหน้าโครงการ</h3><div class="hint" style="margin-bottom:8px">เมื่อสถานะโครงการเปลี่ยน ระบบส่งอีเมลถึงหัวหน้าโครงการ (อีเมลที่กรอกในข้อ 1 ของโครงการ) ตามสถานะที่ติ๊กไว้ การส่งอีเมลไม่สำเร็จจะไม่กระทบการเปลี่ยนสถานะ และผลการส่งจะแจ้งให้ทราบทันทีหลังเปลี่ยนสถานะ</div>'+
 '<label style="display:flex;align-items:center;gap:8px;width:auto;margin:0 0 8px"><input type="checkbox" style="width:auto;margin:0" id="nt_on"'+(n.on?" checked":"")+'><b>เปิดใช้การแจ้งเตือนทางอีเมล</b></label>'+
 '<label>ลิงก์เข้าระบบ (แนบท้ายอีเมล ไม่บังคับ)</label><input id="nt_url" type="url" placeholder="https://..." value="'+esc(n.url||"")+'">'+
 '<h3 style="margin-top:16px;font-size:15px">ค่าเริ่มต้น (ใช้กับโครงการที่ไม่ได้ตั้งค่าแยก)</h3>'+ntBtns("ntd_")+ntChecks("ntd_",n.def||[])+
 '<h3 style="margin-top:16px;font-size:15px">ตั้งค่าแยกรายโครงการ (ปีงบประมาณ '+esc(ST.fy)+')</h3><div class="hint">แต่ละโครงการตั้งค่าอิสระจากกัน เลือก "กำหนดเอง" แล้วติ๊กสถานะที่ต้องการ หรือ "ไม่แจ้งโครงการนี้" ปีงบประมาณอื่นให้สลับปีด้านบนแล้วตั้งค่า</div>'+
 (rows?'<div class="wrap"><table><tr><th style="width:110px">รหัส</th><th>โครงการ / เจ้าของ / สถานะปัจจุบัน</th><th>การแจ้งเตือน</th><th>สถานะที่แจ้ง</th></tr>'+rows+'</table></div>':'<div class="hint">ยังไม่มีโครงการในปีงบประมาณนี้</div>')+
-'<button class="btn" style="margin-top:10px" onclick="ntSave()">บันทึกการแจ้งเตือน</button></div>'}
+'<button class="btn" style="margin-top:10px" onclick="ntSave()">บันทึกการแจ้งเตือน</button> <button class="btn g" onclick="ntTest()">📧 ทดสอบส่งอีเมลถึงฉัน</button></div>'}
+function ntTest(){api("notify",{test:true}).then(function(r){alert(r.test&&r.test.reason?r.test.reason:"ทดสอบแล้ว")}).catch(function(e){alert("ทดสอบไม่สำเร็จ: "+emsg(e))})}
 function ntSave(){var per={};(ST.ps||[]).forEach(function(p,k){var m=document.getElementById("ntm_"+k);if(!m)return;per[p.id]=m.value==="inherit"?null:m.value==="off"?[]:ntGet("ntp"+k+"_")});
 api("notify",{on:!!document.getElementById("nt_on").checked,url:document.getElementById("nt_url").value,def:ntGet("ntd_"),per:per}).then(function(r){ST.notify=r.notify||ST.notify;render();alert("บันทึกการแจ้งเตือนเรียบร้อยแล้ว")}).catch(function(e){alert(emsg(e))})}
 function cfgYearCard(){var cf=ST.cfgs||{},ys=Object.keys(cf).sort();if(!ys.length&&ST.cfg){cf[ST.fy]=ST.cfg;ys=[String(ST.fy)]}
@@ -1019,7 +1020,7 @@ function executiveSummaryPrint(){
   h += '<div class="box"><b>'+ps.length+'</b>โครงการทั้งหมด</div>';
   h += '<div class="box"><b>'+fmt(totalRequested)+' บาท</b>วงเงินเสนอขอรวม</div>';
   h += '<div class="box"><b>'+fmt(totalApproved)+' บาท</b>วงเงินอนุมัติรวม</div>';
-  h += '<div class="box"><b>'+disbursePct+'%</b>อัตราเบิกจ่าย ('+fmt(totalSpent)+' บาท)</div>';
+  h += '<div class="box"><b>'+fmt(totalSpent)+' บาท</b><span style="display:block;font-size:14px;color:#173C6E;font-weight:700;margin-top:4px">อัตราเบิกจ่าย '+disbursePct+'%</span></div>';
   h += '</div>';
 
   h += '<div class="card"><h3 style="margin:0 0 8px;font-size:14px">ความก้าวหน้าโครงการตาม 7 ขั้นตอน (Workflow Pipeline)</h3>';
@@ -1121,7 +1122,7 @@ function sroiOpen(id,fy){
   flush().then(function(){ST.fy=String(fy);ST.cur=null;ST.followId=null;return load()}).then(open).catch(function(e){alert(emsg(e))});
 }
 function sroiBarSvg(Ys,sel){
-  var G=Ys.length,W=Math.max(360,90+G*110),H=300,L=64,R=14,T=26,B=46,pw=W-L-R,ph=H-T-B,mx=0;
+  var G=Ys.length,W=Math.max(360,90+G*110),H=220,L=58,R=12,T=22,B=40,pw=W-L-R,ph=H-T-B,mx=0;
   Ys.forEach(function(a){mx=Math.max(mx,a.inv,a.val)});
   var nz=sroiNice(mx,4),gw=pw/G,bw=Math.min(40,gw*0.36),i,v,y;
   var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="กราฟแท่งเปรียบเทียบงบประมาณลงทุนกับมูลค่าผลลัพธ์ทางสังคมรายปีงบประมาณ" style="width:100%;min-width:'+W+'px;height:auto;display:block;font-family:inherit">';
@@ -1141,7 +1142,7 @@ function sroiBarSvg(Ys,sel){
   return s+'</svg>';
 }
 function sroiLineSvg(Ys,sel){
-  var G=Ys.length,W=Math.max(360,90+G*110),H=300,L=56,R=18,T=26,B=46,pw=W-L-R,ph=H-T-B,mx=1;
+  var G=Ys.length,W=Math.max(360,90+G*110),H=220,L=52,R=16,T=22,B=40,pw=W-L-R,ph=H-T-B,mx=1;
   Ys.forEach(function(a){mx=Math.max(mx,a.ratio)});
   var nz=sroiNice(mx*1.08,4),gw=pw/G,i,v,y,pts=[];
   function py(r){return T+ph-(r/nz.max*ph)}
